@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kobick App Studio</title>
+<meta name="description" content="Kobick App Studio — 일상을 더 스마트하게 만드는 모바일 앱을 개발합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0f14; --bg2: #13161e; --bg3: #1a1e2a;
+    --accent: #5be0b0; --accent2: #3ab88c;
+    --text: #e8eaf0; --text2: #8b90a0; --text3: #5a5f70;
+    --border: rgba(255,255,255,0.07);
+    --font-en: 'DM Sans', sans-serif;
+    --font-ko: 'Noto Sans KR', sans-serif;
+    --font-display: 'DM Serif Display', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-ko); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  body.lang-en { font-family: var(--font-en); }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw;
+    background: rgba(13,15,20,0.88); backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+  .nav-logo { display: flex; align-items: baseline; gap: 0.4rem; text-decoration: none; }
+  .nav-logo .brand { font-family: var(--font-display); font-size: 1.25rem; color: var(--accent); letter-spacing: -0.01em; }
+  .nav-logo .sub { font-family: var(--font-en); font-size: 0.72rem; color: var(--text2); letter-spacing: 0.15em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text2); font-size: 0.88rem; font-family: var(--font-en); transition: color 0.2s; letter-spacing: 0.02em; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 0.4rem; }
+  .lang-btn {
+    background: none; border: 0.5px solid var(--border); border-radius: 6px;
+    color: var(--text3); font-family: var(--font-en); font-size: 0.78rem;
+    padding: 0.3rem 0.65rem; cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em;
+  }
+  .lang-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(91,224,176,0.07); }
+  .lang-btn:hover:not(.active) { border-color: var(--text2); color: var(--text); }
+
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 10rem 5vw 6rem; position: relative; overflow: hidden;
+  }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(91,224,176,0.06) 0%, transparent 70%); pointer-events: none; }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 80%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; text-align: center; max-width: 820px; }
+  .hero-eyebrow { display: inline-block; font-family: var(--font-en); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 0.5px solid rgba(91,224,176,0.3); padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 2rem; }
+  .hero h1 { font-family: var(--font-display); font-size: clamp(3.5rem, 9vw, 7rem); line-height: 1; letter-spacing: -0.02em; color: #fff; margin-bottom: 0.1em; }
+  .hero h1 span { color: var(--accent); }
+  .hero-subtitle { font-family: var(--font-en); font-size: 1.05rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 2rem; font-weight: 300; }
+  .hero-desc { font-size: 1.1rem; color: var(--text2); max-width: 520px; margin: 0 auto 3rem; line-height: 1.8; }
+  .hero-cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn { text-decoration: none; padding: 0.75rem 2rem; border-radius: 6px; font-family: var(--font-en); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.03em; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: #0d0f14; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-ghost { border: 0.5px solid rgba(255,255,255,0.2); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  section { padding: 6rem 5vw; }
+  .section-label { font-family: var(--font-en); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); color: #fff; line-height: 1.15; margin-bottom: 1.5rem; }
+
+  #about { border-top: 0.5px solid var(--border); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .about-text p { color: var(--text2); font-size: 1rem; margin-bottom: 1.2rem; line-height: 1.9; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat-box { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+  .stat-num { font-family: var(--font-display); font-size: 2.2rem; color: var(--accent); display: block; line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.85rem; color: var(--text2); }
+
+  #apps { border-top: 0.5px solid var(--border); background: var(--bg2); }
+  .apps-header { max-width: 1100px; margin: 0 auto 3rem; }
+  .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .app-card { background: var(--bg3); border: 0.5px solid var(--border); border-radius: 16px; padding: 1.75rem; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+  .app-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: opacity 0.3s; }
+  .app-card:hover { border-color: rgba(91,224,176,0.2); transform: translateY(-3px); }
+  .app-card:hover::before { opacity: 1; }
+  .app-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(91,224,176,0.1); border: 0.5px solid rgba(91,224,176,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.2rem; }
+  .app-name { font-family: var(--font-en); font-size: 1.1rem; font-weight: 500; color: #fff; margin-bottom: 0.3rem; }
+  .app-sub { font-size: 0.85rem; color: var(--accent); margin-bottom: 0.8rem; }
+  .app-desc { font-size: 0.9rem; color: var(--text2); line-height: 1.7; margin-bottom: 1.2rem; }
+  .app-badge { display: inline-block; font-family: var(--font-en); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 100px; border: 0.5px solid var(--text3); color: var(--text3); }
+  .app-badge.soon { border-color: rgba(91,224,176,0.3); color: var(--accent); }
+
+  #contact { border-top: 0.5px solid var(--border); }
+  .contact-inner { max-width: 700px; margin: 0 auto; }
+  .contact-desc { color: var(--text2); font-size: 1rem; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+  .contact-item { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem; }
+  .contact-item-label { font-family: var(--font-en); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.4rem; }
+  .contact-item-value { font-size: 0.95rem; color: var(--text); }
+  .contact-item-value a { color: var(--accent); text-decoration: none; }
+  .contact-item-value a:hover { text-decoration: underline; }
+
+  footer { border-top: 0.5px solid var(--border); padding: 2.5rem 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent); }
+  .footer-copy { font-family: var(--font-en); font-size: 0.8rem; color: var(--text3); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-eyebrow { animation: fadeUp 0.7s 0.1s both; }
+  .hero h1 { animation: fadeUp 0.7s 0.25s both; }
+  .hero-subtitle { animation: fadeUp 0.7s 0.35s both; }
+  .hero-desc { animation: fadeUp 0.7s 0.45s both; }
+  .hero-cta { animation: fadeUp 0.7s 0.55s both; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">
+      <span class="brand">Kobick</span>
+      <span class="sub">App Studio</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about" data-ko="소개" data-en="About">소개</a></li>
+      <li><a href="#apps" data-ko="앱" data-en="Apps">앱</a></li>
+      <li><a href="#contact" data-ko="연락처" data-en="Contact">연락처</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">KO</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Mobile App Development</div>
+    <h1><span>Kobick</span></h1>
+    <p class="hero-subtitle">App Studio</p>
+    <p class="hero-desc" data-ko="일상을 더 스마트하게.<br>계산기부터 생산성 툴까지, 실용적인 모바일 앱을 만듭니다." data-en="Smarter everyday living.<br>From calculators to productivity tools, we build practical mobile apps.">일상을 더 스마트하게.<br>계산기부터 생산성 툴까지, 실용적인 모바일 앱을 만듭니다.</p>
+    <div class="hero-cta">
+      <a href="#apps" class="btn btn-primary" data-ko="앱 보기" data-en="Our Apps">앱 보기</a>
+      <a href="#contact" class="btn btn-ghost" data-ko="연락하기" data-en="Contact Us">연락하기</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label">About</div>
+      <h2 class="section-title" data-ko="코빅앱스튜디오" data-en="Kobick App Studio">코빅앱스튜디오</h2>
+      <p data-ko="코빅앱스튜디오(Kobick App Studio)는 대한민국에 기반을 둔 독립 모바일 앱 개발사입니다." data-en="Kobick App Studio is an independent mobile app developer based in South Korea.">코빅앱스튜디오(Kobick App Studio)는 대한민국에 기반을 둔 독립 모바일 앱 개발사입니다.</p>
+      <p data-ko="복잡한 일상의 계산과 루틴을 단순하게 만들어주는 실용적인 앱을 iOS와 Android 플랫폼에서 제공합니다." data-en="We create practical apps for iOS and Android that simplify everyday calculations and routines.">복잡한 일상의 계산과 루틴을 단순하게 만들어주는 실용적인 앱을 iOS와 Android 플랫폼에서 제공합니다.</p>
+      <p data-ko="한국, 일본, 미국, 캐나다, 호주, 영국 글로벌 시장을 대상으로 앱을 출시하며, 사용자 친화적인 UI와 명확한 기능에 집중합니다." data-en="Our apps launch across global markets including South Korea, Japan, the United States, Canada, Australia, and the United Kingdom — with a focus on user-friendly UI and clear functionality.">한국, 일본, 미국, 캐나다, 호주, 영국 글로벌 시장을 대상으로 앱을 출시하며, 사용자 친화적인 UI와 명확한 기능에 집중합니다.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-box">
+        <span class="stat-num">5+</span>
+        <span class="stat-label" data-ko="출시 예정 앱 (2026)" data-en="Apps Planned (2026)">출시 예정 앱 (2026)</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">6</span>
+        <span class="stat-label" data-ko="서비스 국가" data-en="Countries Served">서비스 국가</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">iOS</span>
+        <span class="stat-label" data-ko="& Android 동시 지원" data-en="& Android Support">&amp; Android 동시 지원</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">2026</span>
+        <span class="stat-label" data-ko="설립 연도" data-en="Founded">설립 연도</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apps">
+  <div class="apps-header">
+    <div class="section-label">Our Apps</div>
+    <h2 class="section-title" data-ko="개발 앱 목록" data-en="Our Applications">개발 앱 목록</h2>
+  </div>
+  <div class="apps-grid">
+
+    <div class="app-card">
+      <div class="app-icon">🧮</div>
+      <p class="app-name">All-in-One Calculator</p>
+      <p class="app-sub" data-ko="올인원 계산기" data-en="17 calculators in one app">올인원 계산기</p>
+      <p class="app-desc" data-ko="기본 계산기부터 환율, BMI, 세금, 단위변환까지 17종 계산기를 하나의 앱으로 제공합니다." data-en="17 essential calculators in one app — from basic math to currency, BMI, tax, and unit conversion.">기본 계산기부터 환율, BMI, 세금, 단위변환까지 17종 계산기를 하나의 앱으로 제공합니다.</p>
+      <span class="app-badge soon">2026 · Q3</span>
+    </div>
+
+    <div class="app-card">
+      <div class="app-icon">⏱️</div>
+      <p class="app-name">N-Life</p>
+      <p class="app-sub" data-ko="N-라이프 · 멀티잡 관리" data-en="Multi-job Manager">N-라이프 · 멀티잡 관리</p>
+      <p class="app-desc" data-ko="N잡러를 위한 타임시트, 자동 루틴, 수입 계산기를 통합한 멀티잡 관리 앱입니다." data-en="An all-in-one app for multi-jobbers — timesheets, automated routines, and income tracking.">N잡러를 위한 타임시트, 자동 루틴, 수입 계산기를 통합한 멀티잡 관리 앱입니다.</p>
+      <span class="app-badge soon">2026 · Q4</span>
+    </div>
+
+    <div class="app-card">
+      <div class="app-icon">🛒</div>
+      <p class="app-name">Jikmoney</p>
+      <p class="app-sub" data-ko="직구머니 · 해외직구 계산기" data-en="Cross-border Shopping Calculator">직구머니 · 해외직구 계산기</p>
+      <p class="app-desc" data-ko="해외직구 관세·배송비·환율을 한 번에 계산하고 위시리스트를 관리하는 직구 전용 앱입니다." data-en="Calculate import duties, shipping costs, and exchange rates for cross-border shopping — with a built-in wishlist.">해외직구 관세·배송비·환율을 한 번에 계산하고 위시리스트를 관리하는 직구 전용 앱입니다.</p>
+      <span class="app-badge soon">2026 · Q4</span>
+    </div>
+
+    <div class="app-card">
+      <div class="app-icon">⚡</div>
+      <p class="app-name">Auto Routine</p>
+      <p class="app-sub" data-ko="자동루틴 · 조건 기반 자동화" data-en="Condition-based Automation">자동루틴 · 조건 기반 자동화</p>
+      <p class="app-desc" data-ko="조건 기반 루틴 자동화로 반복적인 일상 행동을 스마트하게 처리해주는 앱입니다." data-en="Automate repetitive daily actions using condition-based rules, making your routine smarter.">조건 기반 루틴 자동화로 반복적인 일상 행동을 스마트하게 처리해주는 앱입니다.</p>
+      <span class="app-badge">2026 · Q4</span>
+    </div>
+
+    <div class="app-card">
+      <div class="app-icon">✅</div>
+      <p class="app-name">Habit Tracker</p>
+      <p class="app-sub" data-ko="해빗트래커 · 습관 관리" data-en="Goal &amp; Habit Tracking">해빗트래커 · 습관 관리</p>
+      <p class="app-desc" data-ko="습관 형성과 목표 달성을 시각적으로 추적하는 심플한 습관 관리 앱입니다." data-en="A clean, visual app for building habits and tracking your goals day by day.">습관 형성과 목표 달성을 시각적으로 추적하는 심플한 습관 관리 앱입니다.</p>
+      <span class="app-badge">2027 · Q1</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title" data-ko="연락처" data-en="Get in Touch">연락처</h2>
+    <p class="contact-desc" data-ko="문의사항이 있으시면 이메일로 연락 주세요." data-en="Feel free to reach out via email for any inquiries.">문의사항이 있으시면 이메일로 연락 주세요.</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <p class="contact-item-label">Company</p>
+        <p class="contact-item-value">코빅앱스튜디오<br>Kobick App Studio</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Location</p>
+        <p class="contact-item-value" data-ko="대한민국" data-en="Republic of Korea">대한민국</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Email</p>
+        <p class="contact-item-value"><a href="mailto:mayfly96@kobick.com">mayfly96@kobick.com</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-item-label">Phone</p>
+        <p class="contact-item-value">+82 10-2742-1732</p>
+      </div>
+      <div class="contact-item" style="grid-column: 1 / -1;">
+        <p class="contact-item-label">Platform</p>
+        <p class="contact-item-value">iOS &amp; Android</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Kobick</span>
+  <span class="footer-copy">© 2026 Kobick App Studio. All rights reserved.</span>
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.querySelectorAll('[data-ko][data-en]').forEach(function(el) {
+      el.innerHTML = el.getAttribute('data-' + lang);
+    });
+    try { localStorage.setItem('lang', lang); } catch(e) {}
+  }
+  (function() {
+    try {
+      var saved = localStorage.getItem('lang');
+      if (saved === 'en') setLang('en');
+    } catch(e) {}
+  })();
+</script>
+</body>
+</html>
